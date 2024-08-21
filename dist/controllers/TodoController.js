@@ -71,6 +71,7 @@ const updatetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             data: {
                 title,
                 content,
+                userId: isTodoExist.userId,
             },
         });
         return res.status(200).json({
