@@ -123,12 +123,18 @@ const deletetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deletetodo = deletetodo;
 const getAlltodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { userId } = req.params;
+        const { id } = req.params;
         const todos = yield prisma.todo.findMany({
             where: {
-                userId: userId,
+                userId: id,
             },
         });
+        if (todos.length === 0) {
+            return res.status(400).json({
+                error: "Todo not found",
+                success: false,
+            });
+        }
         return res.status(200).json({
             success: true,
             todos,

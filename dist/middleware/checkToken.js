@@ -31,6 +31,7 @@ const protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
                     .status(401)
                     .json({ message: "Not authorized, invalid token" });
             }
+            return user;
             next();
         }
         catch (error) {
