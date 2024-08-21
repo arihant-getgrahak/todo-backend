@@ -1,8 +1,23 @@
-import bcrypt from "bcrypt";
-import { generateToken } from "../utils/generateToken";
-import { PrismaClient } from "@prisma/client";
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.login = exports.register = void 0;
+// import bcrypt from "bcrypt";
+const bcrypt = require("bcrypt");
+// import { generateToken } from "../utils/generateToken";
+const generateToken = require("../utils/generateToken");
+// import { PrismaClient } from "@prisma/client";
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-export const register = async (req, res) => {
+const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password, name } = req.body;
         if (!email || !password) {
@@ -11,7 +26,7 @@ export const register = async (req, res) => {
                 success: false,
             });
         }
-        const existingmail = await prisma.user.findMany({
+        const existingmail = yield prisma.user.findMany({
             where: {
                 email: email,
             },
@@ -22,9 +37,9 @@ export const register = async (req, res) => {
                 success: false,
             });
         }
-        const hashed = await bcrypt.hash(password, 10);
+        const hashed = yield bcrypt.hash(password, 10);
         if (hashed) {
-            await prisma.user.create({
+            yield prisma.user.create({
                 data: {
                     email,
                     name,
@@ -49,8 +64,9 @@ export const register = async (req, res) => {
             success: false,
         });
     }
-};
-export const login = async (req, res) => {
+});
+exports.register = register;
+const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -59,7 +75,7 @@ export const login = async (req, res) => {
                 success: false,
             });
         }
-        const existingUser = await prisma.user.findFirst({
+        const existingUser = yield prisma.user.findFirst({
             where: {
                 email: email,
             },
@@ -70,14 +86,14 @@ export const login = async (req, res) => {
                 success: false,
             });
         }
-        const passwordMatches = await bcrypt.compare(password, existingUser.password);
+        const passwordMatches = yield bcrypt.compare(password, existingUser.password);
         if (!passwordMatches) {
             return res.status(400).json({
                 error: "Incorrect password",
                 success: false,
             });
         }
-        const token = await generateToken(existingUser.id, existingUser.email);
+        const token = yield generateToken(existingUser.id, existingUser.email);
         return res.status(200).json({
             message: "Login Successfully",
             token: token,
@@ -92,7 +108,8 @@ export const login = async (req, res) => {
             success: false,
         });
     }
-};
+});
+exports.login = login;
 // const updateProfile = asyncHandler(async (req, res) => {
 //   try {
 //     const data = req.body;

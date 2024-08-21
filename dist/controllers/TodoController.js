@@ -1,10 +1,22 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-export const addtodo = async (req, res) => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getSpecifictodo = exports.getAlltodo = exports.deletetodo = exports.updatetodo = exports.addtodo = void 0;
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+const addtodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, content, userId } = await req.body;
+        const { title, content, userId } = yield req.body;
         // check user Exist
-        const isUserExist = await prisma.user.findUnique({
+        const isUserExist = yield prisma.user.findUnique({
             where: {
                 id: userId,
             },
@@ -16,7 +28,7 @@ export const addtodo = async (req, res) => {
             });
         }
         // add todo
-        const todo = await prisma.todo.create({
+        const todo = yield prisma.todo.create({
             data: {
                 title,
                 content,
@@ -34,12 +46,13 @@ export const addtodo = async (req, res) => {
             success: false,
         });
     }
-};
-export const updatetodo = async (req, res) => {
+});
+exports.addtodo = addtodo;
+const updatetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, content, titleId } = await req.body;
+        const { title, content, titleId } = yield req.body;
         // check Todo Exist
-        const isTodoExist = await prisma.todo.findUnique({
+        const isTodoExist = yield prisma.todo.findUnique({
             where: {
                 id: titleId,
             },
@@ -51,7 +64,7 @@ export const updatetodo = async (req, res) => {
             });
         }
         // update todo
-        const todo = await prisma.todo.update({
+        const todo = yield prisma.todo.update({
             where: {
                 id: titleId,
             },
@@ -71,12 +84,13 @@ export const updatetodo = async (req, res) => {
             success: false,
         });
     }
-};
-export const deletetodo = async (req, res) => {
+});
+exports.updatetodo = updatetodo;
+const deletetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { titleId } = await req.body;
+        const { titleId } = yield req.body;
         // check Todo Exist
-        const isTodoExist = await prisma.todo.findUnique({
+        const isTodoExist = yield prisma.todo.findUnique({
             where: {
                 id: titleId,
             },
@@ -88,7 +102,7 @@ export const deletetodo = async (req, res) => {
             });
         }
         // delete todo
-        const todo = await prisma.todo.delete({
+        const todo = yield prisma.todo.delete({
             where: {
                 id: titleId,
             },
@@ -104,11 +118,12 @@ export const deletetodo = async (req, res) => {
             success: false,
         });
     }
-};
-export const getAlltodo = async (req, res) => {
+});
+exports.deletetodo = deletetodo;
+const getAlltodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
-        const todos = await prisma.todo.findMany({
+        const todos = yield prisma.todo.findMany({
             where: {
                 userId: userId,
             },
@@ -124,11 +139,12 @@ export const getAlltodo = async (req, res) => {
             success: false,
         });
     }
-};
-export const getSpecifictodo = async (req, res) => {
+});
+exports.getAlltodo = getAlltodo;
+const getSpecifictodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const todo = await prisma.todo.findUnique({
+        const todo = yield prisma.todo.findUnique({
             where: {
                 id: id,
             },
@@ -144,4 +160,5 @@ export const getSpecifictodo = async (req, res) => {
             success: false,
         });
     }
-};
+});
+exports.getSpecifictodo = getSpecifictodo;
