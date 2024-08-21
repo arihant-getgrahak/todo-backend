@@ -14,6 +14,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const addtodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(yield req.body);
         const { title, content, userId } = yield req.body;
         // check user Exist
         const isUserExist = yield prisma.user.findUnique({
