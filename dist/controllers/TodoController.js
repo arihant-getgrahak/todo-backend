@@ -89,11 +89,11 @@ const updatetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updatetodo = updatetodo;
 const deletetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { titleId } = yield req.params;
+        const { id } = req.params;
         // check Todo Exist
         const isTodoExist = yield prisma.todo.findUnique({
             where: {
-                id: titleId,
+                id: id,
             },
         });
         if (!isTodoExist) {
@@ -105,7 +105,7 @@ const deletetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         // delete todo
         const todo = yield prisma.todo.delete({
             where: {
-                id: titleId,
+                id: id,
             },
         });
         return res.status(200).json({
