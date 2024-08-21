@@ -89,7 +89,7 @@ const updatetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updatetodo = updatetodo;
 const deletetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { titleId } = yield req.body;
+        const { titleId } = yield req.params;
         // check Todo Exist
         const isTodoExist = yield prisma.todo.findUnique({
             where: {
