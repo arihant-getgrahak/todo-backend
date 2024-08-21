@@ -1,14 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const generateToken_1 = require("../utils/generateToken");
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
-const register = async (req, res) => {
+import bcrypt from "bcrypt";
+import { generateToken } from "../utils/generateToken";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+export const register = async (req, res) => {
     try {
         const { email, password, name } = req.body;
         if (!email || !password) {
@@ -28,7 +22,7 @@ const register = async (req, res) => {
                 success: false,
             });
         }
-        const hashed = await bcrypt_1.default.hash(password, 10);
+        const hashed = await bcrypt.hash(password, 10);
         if (hashed) {
             await prisma.user.create({
                 data: {
@@ -56,8 +50,7 @@ const register = async (req, res) => {
         });
     }
 };
-exports.register = register;
-const login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -77,14 +70,14 @@ const login = async (req, res) => {
                 success: false,
             });
         }
-        const passwordMatches = await bcrypt_1.default.compare(password, existingUser.password);
+        const passwordMatches = await bcrypt.compare(password, existingUser.password);
         if (!passwordMatches) {
             return res.status(400).json({
                 error: "Incorrect password",
                 success: false,
             });
         }
-        const token = await (0, generateToken_1.generateToken)(existingUser.id, existingUser.email);
+        const token = await generateToken(existingUser.id, existingUser.email);
         return res.status(200).json({
             message: "Login Successfully",
             token: token,
@@ -100,7 +93,6 @@ const login = async (req, res) => {
         });
     }
 };
-exports.login = login;
 // const updateProfile = asyncHandler(async (req, res) => {
 //   try {
 //     const data = req.body;

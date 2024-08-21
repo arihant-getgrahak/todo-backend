@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSpecifictodo = exports.getAlltodo = exports.deletetodo = exports.updatetodo = exports.addtodo = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
-const addtodo = async (req, res) => {
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+export const addtodo = async (req, res) => {
     try {
         const { title, content, userId } = await req.body;
         // check user Exist
@@ -38,8 +35,7 @@ const addtodo = async (req, res) => {
         });
     }
 };
-exports.addtodo = addtodo;
-const updatetodo = async (req, res) => {
+export const updatetodo = async (req, res) => {
     try {
         const { title, content, titleId } = await req.body;
         // check Todo Exist
@@ -76,8 +72,7 @@ const updatetodo = async (req, res) => {
         });
     }
 };
-exports.updatetodo = updatetodo;
-const deletetodo = async (req, res) => {
+export const deletetodo = async (req, res) => {
     try {
         const { titleId } = await req.body;
         // check Todo Exist
@@ -110,8 +105,7 @@ const deletetodo = async (req, res) => {
         });
     }
 };
-exports.deletetodo = deletetodo;
-const getAlltodo = async (req, res) => {
+export const getAlltodo = async (req, res) => {
     try {
         const { userId } = req.params;
         const todos = await prisma.todo.findMany({
@@ -131,8 +125,7 @@ const getAlltodo = async (req, res) => {
         });
     }
 };
-exports.getAlltodo = getAlltodo;
-const getSpecifictodo = async (req, res) => {
+export const getSpecifictodo = async (req, res) => {
     try {
         const { id } = req.params;
         const todo = await prisma.todo.findUnique({
@@ -152,4 +145,3 @@ const getSpecifictodo = async (req, res) => {
         });
     }
 };
-exports.getSpecifictodo = getSpecifictodo;

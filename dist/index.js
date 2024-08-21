@@ -1,16 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const app = (0, express_1.default)();
-const body_parser_1 = __importDefault(require("body-parser"));
-const morgan_1 = __importDefault(require("morgan"));
-const cors_1 = __importDefault(require("cors"));
+import express from "express";
+const app = express();
+import bodyParser from "body-parser";
+import morgan from "morgan";
+import cors from "cors";
 // import connectDB from "./components/db/conn"
 const port = Number(process.env.PORT) || 3000;
-app.use(express_1.default.urlencoded({
+app.use(express.urlencoded({
     extended: true,
 }));
 // var whitelist = ["*"];
@@ -29,19 +24,19 @@ var corsOptions = {
         "Accept",
     ],
 };
-app.use((0, cors_1.default)(corsOptions));
-app.use((0, morgan_1.default)("dev"));
-app.use(body_parser_1.default.urlencoded({ extended: false }));
-app.use(body_parser_1.default.json());
+app.use(cors(corsOptions));
+app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 // Import Routes
-const userRoute_1 = __importDefault(require("./routes/userRoute"));
-const todoRoute_1 = __importDefault(require("./routes/todoRoute"));
+import userRoute from "./routes/userRoute";
+import todoRoute from "./routes/todoRoute";
 // Routes
 app.get("/", (req, res) => {
     res.send("Welcome to Todos Api");
 });
-app.use("/api/user", userRoute_1.default);
-app.use("/api/todo", todoRoute_1.default);
+app.use("/api/user", userRoute);
+app.use("/api/todo", todoRoute);
 // Start the server
 const startServer = async (port) => {
     //   await connectDB();
